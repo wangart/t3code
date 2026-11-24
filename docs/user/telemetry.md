@@ -1,13 +1,12 @@
 # Product usage data
 
-The T3 Code server sends product usage events to T3 Code's own endpoint at `ingest.t3.codes`,
-associated with a hashed account or installation identifier. To count how many installations one person
-uses, the server also sends hashed account identifiers: your T3 Connect account, your OpenAI and
-Claude accounts when you are signed in, and a random identifier for each device that connects. The endpoint keeps a copy of each
-event and forwards events to PostHog. Events include the provider, model, reasoning effort,
-permission mode, turn and request results, duration, release channel, and token counts when
-available. Child-agent token counts are reported separately from the main agent's. Model names
-are sent only when they appear in a provider's public model list.
+The desktop app and server keep product usage events and relay tracing off by default.
+If you opt in, the server sends usage events to `ingest.t3.codes`, which stores a copy and
+forwards events to PostHog. Events carry a random install identifier and can include hashed
+T3 Connect account and client device identifiers. Analytics does not read Codex or Claude
+sign-in files. Events include the provider, model, reasoning effort, permission mode, turn
+and request results, duration, release channel, and token counts when available. Child-agent
+token counts are reported separately from the main agent's.
 
 Product events do not include prompts, responses, file contents, authentication tokens, conversation IDs,
 raw provider events, or child-agent output.
@@ -19,8 +18,8 @@ separate from product events. Depending on the client version, traces can includ
 timings, environment identifiers and the connected machine's name. Failed spans can include error
 messages and stack traces; error text can quote a value the app was handling.
 
-To disable product events and relay tracing from the server, set
-`T3CODE_TELEMETRY_ENABLED=false` in its environment before starting it. Relay tracing also stops
+To enable product events and relay tracing in the desktop app or server, set
+`T3CODE_TELEMETRY_ENABLED=true` in its environment before starting it. Relay tracing stays off
 when `T3CODE_OTEL_SDK_DISABLED` or `OTEL_SDK_DISABLED` turns OpenTelemetry export off.
 
 An administrator can turn product events and relay tracing off in the server and desktop app with
